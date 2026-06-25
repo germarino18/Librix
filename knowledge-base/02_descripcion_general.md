@@ -4,28 +4,35 @@
 
 | Capa | Tecnología | Versión / Detalle |
 |------|-----------|-------------------|
-| Frontend | React + Vite | SPA moderna con routing |
-| UI | shadcn/ui + Tailwind CSS | Componentes accesibles, utility-first |
-| Backend / DB | PocketBase standalone | SQLite embebido, API REST auto-generada |
-| Package Manager | pnpm | Más rápido, seguro, disco eficiente |
+| Frontend | React + Vite + TypeScript | SPA moderna con routing |
+| UI | shadcn/ui + Tailwind CSS v4 | Componentes accesibles, utility-first |
+| Backend | FastAPI + SQLAlchemy + Alembic | API REST asíncrona |
+| Base de datos | PostgreSQL | Relacional, robusto |
+| Package Manager | pnpm (frontend) / pip (backend) | |
 | Entorno | Windows | PC del local |
 
 ## Arquitectura general
 
 ```
-┌──────────────────────────────┐
-│   React SPA (Vite + shadcn)  │  ← Navegador en la PC
-│   http://localhost:5173       │     (futuro: PWA en celulares)
-└──────────┬───────────────────┘
-           │ HTTP (fetch)
-           ▼
-┌──────────────────────────────┐
-│   PocketBase (pocketbase.exe) │  ← Corre en la misma PC
-│   http://localhost:8090       │
-│   ┌────────────────────────┐  │
-│   │  SQLite                │  │  ← BD local, sin servidor externo
-│   └────────────────────────┘  │
-└──────────────────────────────┘
+┌──────────────────────────────────────┐
+│   React SPA (Vite + shadcn)          │  ← Navegador en PC
+│   http://localhost:5173 (dev)         │     y celulares por WiFi
+└──────────────┬───────────────────────┘
+               │ HTTP (REST JSON)
+               ▼
+┌──────────────────────────────────────┐
+│   FastAPI + Uvicorn                  │  ← Backend API
+│   http://localhost:8000/api          │
+│   ┌──────────────────────────────┐   │
+│   │  SQLAlchemy (async)          │   │  ← ORM
+│   └──────────┬───────────────────┘   │
+│              │                       │
+│              ▼                       │
+│   ┌──────────────────────────────┐   │
+│   │  PostgreSQL                  │   │  ← Base de datos
+│   │  localhost:5432/librix       │   │
+│   └──────────────────────────────┘   │
+└──────────────────────────────────────┘
 ```
 
 ## Integraciones externas
@@ -36,5 +43,6 @@
 
 - PC Windows
 - Node.js + pnpm para el frontend
-- PocketBase como binario standalone
+- Python 3.11+ para el backend
+- PostgreSQL local
 - Editor: opencode (recomendado)

@@ -15,13 +15,16 @@ Actualmente usan Excel solo para precios. El stock se controla mentalmente. El o
 ## Stack tecnológico
 
 | Capa | Tecnología |
-|---|---|
-| Frontend | React + Vite |
-| UI | shadcn/ui + Tailwind CSS |
-| Backend / Base de datos | PocketBase (corre localmente en la PC del local) |
+|---|---|---|
+| Frontend | React + Vite + TypeScript + PWA |
+| UI | shadcn/ui + Tailwind CSS v4 |
+| Backend | FastAPI + SQLAlchemy + Alembic |
+| Base de datos | PostgreSQL |
 | Acceso desde celular | PWA — accesible por WiFi de la red local |
 
 El sistema corre en la PC del local. Los celulares se conectan por WiFi local. No depende de internet externo para funcionar.
+
+El frontend React se sirve como SPA standalone (Vite dev server en desarrollo, build estático en producción). La API REST de FastAPI corre en un servidor Uvicorn separado.
 
 ---
 

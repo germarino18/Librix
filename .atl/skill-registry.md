@@ -8,7 +8,7 @@ See `_shared/skill-resolver.md` for the full resolution protocol.
 
 | Trigger | Skill | Path |
 |---------|-------|------|
-| building PocketBase backends, designing schemas, access control, auth flows, performance optimization | pocketbase-best-practices | `C:\Users\German\.agents\skills\pocketbase-best-practices\SKILL.md` |
+| building FastAPIs, Python async web development, SQLAlchemy, Pydantic models, REST API design | fastapi-python | `C:\Users\German\.agents\skills\fastapi-python\SKILL.md` |
 | server-state management, data fetching in TS/JS, React, Vue, Solid, Svelte & Angular | tanstack-query | `C:\Users\German\.agents\skills\tanstack-query\SKILL.md` |
 | adding shadcn/ui, installing shadcn, Button, Card, Dialog, Form, shadcn components, Radix UI + Tailwind | shadcn-ui | `C:\Users\German\.agents\skills\shadcn-ui\SKILL.md` |
 | styling with Tailwind v4, configuring Tailwind, utility classes, @theme, @layer, @utility | tailwind-css | `C:\Users\German\.agents\skills\tailwind-css\SKILL.md` |
@@ -36,22 +36,16 @@ See `_shared/skill-resolver.md` for the full resolution protocol.
 
 Pre-digested rules per skill. Delegators copy matching blocks into sub-agent prompts as `## Project Standards (auto-resolved)`.
 
-### pocketbase-best-practices
-- Use JSON fields for objects/structured data, Select for enums, Relation over manual ID strings
-- Always set API rules; empty rules = public access. Start locked, open selectively.
-- Use `@request.auth`, `@collection`, `@now`, `@request.context` (values: `default`/`oauth2`/`otp`/`password`/`realtime`/`protectedFile`) in rules
-- Filter binding to prevent injection: `{:name}` + `dbx.Params` in server-side `FindFirstRecordByFilter`/`FindRecordsByFilter`
-- `authWithPassword` for email/pass; `requestOTP`→`authWithOTP` for OTP; rate-limit requestOTP
-- Expand relations (`expand`) to avoid N+1; use cursor pagination for large datasets
-- Select only needed fields (`fields` param); batch creates/updates when possible
-- Realtime: subscribe to specific records/collections; implement reconnection logic
-- File serving: `pb.files.getURL()`; uploads via FormData; validate types/sizes server-side
-- `defer fs.Close()` on every `NewFilesystem()`/`NewBackupsFilesystem()` handle in Go extensions
-- Go hooks: always call `e.Next()`; use `Bind(id)` + `Unbind` for cleanup
-- JSVM: only CJS (`require()`) works in goja; bundle ESM first; avoid mutable module state
-- Never ship `no-reply@example.com`; resolve sender from `app.Settings().Meta` at send-time
-- Rate limiting: use built-in fixed-window (v0.36.7+); front with Nginx/Caddy for defense in depth
-- Production: raise `ulimit -n` for realtime, set `GOMEMLIMIT`, enable settings encryption with `PB_ENCRYPTION` (32 chars)
+### fastapi-python
+- Use `def` for pure functions, `async def` for async operations; type hints on all signatures
+- Structure: exported router, sub-routes, utilities, Pydantic models, schemas per feature
+- Use Pydantic BaseModel consistently for input/output validation
+- Use HTTPException for expected errors, model as specific HTTP responses
+- Prefer lifespan context managers over deprecated `on_event` for startup/shutdown
+- Minimize blocking I/O; use `async def` for all database and API calls
+- Rely on FastAPI's dependency injection system for database sessions, etc.
+- Organize by feature: `features/{feature}/{models,schemas,router,service}.py`
+- Favor functional (plain functions) over class-based views
 
 ### tanstack-query
 - Use `queryOptions()` helper for type-safe, reusable query configurations
@@ -149,4 +143,5 @@ Builds 10 canonical .md files at `knowledge-base/`. Dual mode: silent from exist
 
 | File | Path | Notes |
 |------|------|-------|
-| — | — | No project convention files found (no AGENTS.md, CLAUDE.md, .cursorrules, GEMINI.md, or copilot-instructions.md) |
+| AGENTS.md | `E:\GERMAN\Librix\AGENTS.md` | Hard rules: no `any`, no tailwind.config.js, feature-based structure |
+| CLAUDE.md | `E:\GERMAN\Librix\CLAUDE.md` | Mirror of AGENTS.md |

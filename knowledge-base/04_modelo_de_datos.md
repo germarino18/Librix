@@ -1,6 +1,6 @@
 # 04 — Modelo de Datos
 
-## Colecciones (PocketBase)
+## Entidades
 
 ### Categoria
 | Campo | Tipo | Notas |

@@ -18,6 +18,5 @@
 
 ## Resueltas (decisiones tomadas en sesión)
 
-- PocketBase → **standalone** en Windows
 - Desktop-first → sí, mobile después
 - Mercado Pago → solo selección manual, sin integración

@@ -4,7 +4,7 @@
 
 | Decisión | Opción elegida | Alternativa | Motivo |
 |----------|---------------|-------------|--------|
-| DB | PocketBase (standalone) | Firebase, Supabase | Corre 100% local, sin internet, SQLite, API REST automática |
+| DB + Backend | FastAPI + PostgreSQL | PocketBase, Firebase, Supabase | SQLAlchemy + Alembic, tipado fuerte, escalable, misma feature-structure que el frontend |
 | Autenticación | Sin auth | Login con usuarios | Negocio familiar, todos confían, simplifica el MVP |
 | Método de pago MP | Registro manual | Integración API | No necesita conectividad externa, simplifica |
 | UI Framework | shadcn/ui | MUI, Chakra | Tailwind nativo, componentes accesibles, liviano |

@@ -11,8 +11,9 @@
 |------|-----------|
 | Frontend | React + Vite + TypeScript |
 | UI | shadcn/ui + Tailwind CSS v4 |
-| Backend / DB | PocketBase (standalone, SQLite) |
-| Package Manager | pnpm |
+| Backend | FastAPI + SQLAlchemy + Alembic |
+| Base de datos | PostgreSQL |
+| Package Manager | pnpm (frontend) / pip (backend) |
 | Entorno | Windows (PC del local) |
 | Estado | Context API (app chica, no Redux) |
 | Data fetching | TanStack Query |
@@ -30,7 +31,7 @@ La fuente de verdad del dominio vive en `knowledge-base/`. **Leé el archivo rel
 |---------|---------------|
 | [01_vision_y_objetivos.md](knowledge-base/01_vision_y_objetivos.md) | Entender propósito y alcance MVP |
 | [03_actores_y_roles.md](knowledge-base/03_actores_y_roles.md) | Sin auth, todos con mismo acceso |
-| [04_modelo_de_datos.md](knowledge-base/04_modelo_de_datos.md) | Colecciones PocketBase, entidades, relaciones |
+| [04_modelo_de_datos.md](knowledge-base/04_modelo_de_datos.md) | Entidades, relaciones, modelo de datos |
 | [05_reglas_de_negocio.md](knowledge-base/05_reglas_de_negocio.md) | Reglas codificadas (RN-01 a RN-10) |
 | [06_funcionalidades.md](knowledge-base/06_funcionalidades.md) | Features por épica |
 | [07_flujos_principales.md](knowledge-base/07_flujos_principales.md) | Flujos E2E (venta, caja, servicios) |
@@ -45,7 +46,7 @@ La fuente de verdad del dominio vive en `knowledge-base/`. **Leé el archivo rel
 |--------|-----|------------------|
 | **Frontend** | React / Vite / shadcn/ui / Tailwind / TanStack | `react`, `react-colocation`, `shadcn-ui`, `tailwind-css`, `tanstack-query`, `vercel-react-best-practices` |
 | **Frontend Forms** | React Hook Form + Zod | `react-hook-form-zod` |
-| **Backend** | PocketBase / schemas / API rules | `pocketbase-best-practices` |
+| **Backend** | FastAPI / SQLAlchemy / Alembic / PostgreSQL | `fastapi-python`, `async-python-patterns` |
 | **Orquestación** | OPSX / SDD / fundación | `kb-creator`, `roadmap-generator`, `agents-md-generator`, `skill-creator`, `jr-orchestrator`, `find-skill`, `skill-registry` |
 
 Cargá la skill correspondiente al contexto ANTES de escribir código.
@@ -75,9 +76,9 @@ El plan de implementación completo está en [CHANGES.md](CHANGES.md). Resumen:
 1. **NUNCA usar `any` en TypeScript** → usar tipos específicos o `unknown`.
 2. **NUNCA crear `tailwind.config.js`** → Tailwind v4 se configura con `@import "tailwindcss"` + `@theme` en CSS.
 3. **NUNCA importar de `shadcn/ui` como paquete** → importar desde `@/components/ui/<componente>`.
-4. **NUNCA versionar el `.exe` de PocketBase** → solo se versiona el schema, el binario se descarga.
-5. **NUNCA dejar la API de PocketBase expuesta a internet** → reglas públicas solo para red local.
-6. **NUNCA comitear sin revisar** → ejecutar `git status` + `git diff` antes de cada commit.
+4. **NUNCA exponer la API FastAPI a internet** → solo corre en localhost / red local.
+5. **NUNCA comitear sin revisar** → ejecutar `git status` + `git diff` antes de cada commit.
+6. **NUNCA versionar `.venv/`, `__pycache__/`, ni `pgdata/`** → ya están en `.gitignore`.
 
 ### Estructura de carpetas (feature-based)
 
@@ -89,7 +90,7 @@ src/
     ventas/
       components/      # Componentes de la feature
       hooks/           # Custom hooks de la feature
-      api/             # Llamadas a PocketBase
+      api/             # Llamadas a la API REST
       types/           # Types específicos
       index.ts         # Export público
     productos/
@@ -106,6 +107,27 @@ src/
   lib/                 # Configuración, cliente API
   App.tsx
   main.tsx
+
+backend/               # FastAPI + SQLAlchemy (misma estructura feature-based)
+  app/
+    features/
+      productos/
+        models.py      # SQLAlchemy model
+        schemas.py     # Pydantic schemas
+        router.py      # FastAPI router
+        service.py     # Lógica de negocio
+      ventas/
+      insumos/
+      servicios/
+      caja/
+      dashboard/
+    shared/
+    main.py
+    database.py
+    config.py
+  alembic/
+    versions/
+  requirements.txt
 ```
 
 Regla de decisión para ubicar código:

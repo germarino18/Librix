@@ -9,38 +9,67 @@ Sistema de punto de venta (POS) + inventario + caja para una librería y papeler
 | Frontend | React 19 + Vite + TypeScript |
 | UI | shadcn/ui + Tailwind CSS v4 |
 | Data Fetching | TanStack Query |
-| Backend / DB | PocketBase standalone (SQLite) |
-| Package Manager | pnpm |
+| Backend | FastAPI + SQLAlchemy + Alembic |
+| Base de datos | PostgreSQL |
+| Package Manager | pnpm (frontend) / pip (backend) |
 
 ## Requisitos
 
 - **Node.js** >= 18
 - **pnpm** (instalar con `npm install -g pnpm`)
+- **Python** >= 3.11
+- **PostgreSQL** >= 16
 - **Windows** (el sistema corre en una PC con Windows)
 
 ## Cómo levantar el proyecto
 
-### 1. Backend (PocketBase)
+### 1. Base de datos (PostgreSQL)
 
 ```bash
-# Ir a la carpeta de PocketBase
-cd pocketbase
-
-# Ejecutar el servidor
-.\pocketbase.exe serve
+# Asegurate de tener PostgreSQL corriendo en localhost:5432
+# Crear la base de datos:
+createdb librix
 ```
 
-La API queda disponible en `http://localhost:8090`.
-El Admin UI (para ver/editar datos) en `http://localhost:8090/_/`.
+### 2. Backend (FastAPI)
 
-> No necesitás crear ninguna cuenta — PocketBase corre 100% local.
+```bash
+# Ir a la carpeta del backend
+cd backend
 
-### 2. Frontend (React + Vite)
+# Crear entorno virtual (solo la primera vez)
+python -m venv .venv
+
+# Activar (Windows)
+.venv\Scripts\activate
+
+# Instalar dependencias (solo la primera vez)
+pip install -r requirements.txt
+
+# Configurar .env (solo la primera vez)
+# Editar backend\.env o copiar de .env.example:
+# DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/librix
+
+# Correr migraciones
+alembic upgrade head
+
+# Iniciar servidor
+uvicorn app.main:app --reload
+```
+
+La API queda disponible en `http://localhost:8000`.
+Documentación interactiva en `http://localhost:8000/docs`.
+Health check en `http://localhost:8000/api/health`.
+
+### 3. Frontend (React + Vite)
 
 En otra terminal:
 
 ```bash
-# Instalar dependencias
+# Ir a la carpeta del frontend
+cd frontend
+
+# Instalar dependencias (solo la primera vez)
 pnpm install
 
 # Iniciar en modo desarrollo
@@ -49,51 +78,102 @@ pnpm dev
 
 La app queda disponible en `http://localhost:5173`.
 
-### 3. Build para producción
+### 4. Atajo: los dos a la vez
+
+Desde la raíz del proyecto:
 
 ```bash
-pnpm build
+# Frontend + backend simultáneamente
+pnpm dev:all
+
+# O por separado:
+pnpm dev:frontend   # solo frontend
+pnpm dev:backend    # solo backend (requiere venv activado)
 ```
 
-El build se genera en `dist/`. Podés servirlo con cualquier servidor estático.
+## Variables de entorno
+
+### Frontend (`frontend/.env`)
+
+| Variable | Default | Descripción |
+|----------|---------|-------------|
+| `VITE_API_URL` | `http://localhost:8000/api` | URL base de la API |
+
+### Backend (`backend/.env`)
+
+| Variable | Default | Descripción |
+|----------|---------|-------------|
+| `DATABASE_URL` | `postgresql+asyncpg://postgres:postgres@localhost:5432/librix` | Conexión a PostgreSQL |
 
 ## Scripts disponibles
 
+### Desde la raíz
+
 | Comando | Descripción |
 |---------|-------------|
-| `pnpm dev` | Inicia servidor de desarrollo Vite |
+| `pnpm dev:frontend` | Inicia frontend (Vite) |
+| `pnpm dev:backend` | Inicia backend (uvicorn) |
+| `pnpm dev:all` | Inicia frontend + backend |
+| `pnpm build:frontend` | Build de producción del frontend |
+| `pnpm typecheck` | Verifica tipos TypeScript |
+| `pnpm install:frontend` | Instala dependencias del frontend |
+| `pnpm install:backend` | Instala dependencias del backend (pip) |
+
+### Desde `frontend/`
+
+| Comando | Descripción |
+|---------|-------------|
+| `pnpm dev` | Servidor de desarrollo Vite |
 | `pnpm build` | Build de producción |
 | `pnpm preview` | Previsualiza el build |
 | `pnpm typecheck` | Verifica tipos TypeScript |
+
+### Desde `backend/` (con venv activado)
+
+| Comando | Descripción |
+|---------|-------------|
+| `uvicorn app.main:app --reload` | Servidor de desarrollo |
+| `alembic upgrade head` | Aplica migraciones |
+| `alembic revision --autogenerate -m "mensaje"` | Crea nueva migración |
+| `pytest` | Corre tests |
 
 ## Estructura del proyecto
 
 ```
 librix/
-├── src/
-│   ├── features/          # Módulos por dominio
-│   │   ├── ventas/        # Pantalla de ventas
-│   │   ├── productos/     # ABM de productos
-│   │   ├── insumos/       # Gestión de insumos
-│   │   ├── servicios/     # Registro de servicios
-│   │   ├── caja/          # Apertura/cierre de caja
-│   │   └── dashboard/     # Dashboard de ganancias
-│   ├── components/ui/     # Componentes shadcn/ui
-│   ├── shared/            # Hooks, utils y types globales
-│   ├── lib/               # Configuración (PocketBase, etc.)
-│   ├── App.tsx            # Routes + Layout
-│   └── main.tsx           # Entry point
-├── pocketbase/            # Backend standalone
-│   ├── pocketbase.exe     # (no se versiona)
-│   └── pb_migrations/     # Migraciones versionadas
-├── knowledge-base/        # Documentación del negocio
-└── openspec/              # Seguimiento de cambios
+├── frontend/                    # React + Vite
+│   ├── src/
+│   │   ├── features/            # Módulos por dominio
+│   │   │   ├── ventas/          # Pantalla de ventas
+│   │   │   ├── productos/       # ABM de productos
+│   │   │   ├── insumos/         # Gestión de insumos
+│   │   │   ├── servicios/       # Registro de servicios
+│   │   │   ├── caja/            # Apertura/cierre de caja
+│   │   │   └── dashboard/       # Dashboard de ganancias
+│   │   ├── components/ui/       # Componentes shadcn/ui
+│   │   ├── shared/              # Hooks, utils y types globales
+│   │   └── lib/                 # Configuración, cliente API
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.ts
+│   └── tsconfig.json
+├── backend/                     # FastAPI + SQLAlchemy
+│   ├── app/
+│   │   ├── main.py              # FastAPI app + CORS + health
+│   │   ├── core/                # Config, database, dependencies
+│   │   ├── shared/              # Base ORM, mixins
+│   │   ├── features/            # Misma estructura feature-based
+│   │   │   ├── productos/
+│   │   │   ├── ventas/
+│   │   │   ├── stock/
+│   │   │   ├── insumos/
+│   │   │   ├── servicios/
+│   │   │   ├── caja/
+│   │   │   └── dashboard/
+│   ├── alembic/                 # Migraciones
+│   ├── tests/                   # Tests
+│   ├── requirements.txt
+│   └── .env
+├── knowledge-base/              # Documentación del negocio
+└── openspec/                    # Seguimiento de cambios
 ```
-
-## Variables de entorno
-
-| Variable | Default | Descripción |
-|----------|---------|-------------|
-| `VITE_PB_URL` | `http://localhost:8090` | URL de PocketBase |
-
-Ver `.env.example` para más detalles.
