@@ -89,7 +89,7 @@ Paso │ Agente A (Domain)        │ Agente B (Operations)     │ Agente C (An
 > Proyecto vacío → estructura, dependencias, y schema de base de datos. Sin esto no hay nada.
 
 ### [C-01] `foundation-setup`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` completado
 - **Scope**: Scaffolding completo del proyecto + infraestructura base
   - `frontend/`: Vite + React + TypeScript + Tailwind + shadcn/ui (init con botones, inputs, tablas, modales)
   - `pocketbase/`: binario descargado + `pb_data/` en `.gitignore`
@@ -105,7 +105,7 @@ Paso │ Agente A (Domain)        │ Agente B (Operations)     │ Agente C (An
   - `knowledge-base/08_arquitectura_propuesta.md` §Variables de entorno
 
 ### [C-02] `schema-definition`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` completado
 - **Scope**: Definición de todas las colecciones de PocketBase con campos, relaciones y reglas de acceso público
   - Colección `Categoria`: id, nombre (único)
   - Colección `Producto`: id, nombre, precioCompra (number), precioVenta (number), stockActual (number), stockMinimo (number), unidad (text), activo (bool), categoria_id (relation → Categoria)
@@ -294,8 +294,8 @@ Paso │ Agente A (Domain)        │ Agente B (Operations)     │ Agente C (An
 
 | Change | Nombre | Dependencias | Governance | Fase |
 |--------|--------|-------------|------------|------|
-| C-01 | foundation-setup | — | BAJO | Fundamentos |
-| C-02 | schema-definition | C-01 | CRITICO | Fundamentos |
+| C-01 | foundation-setup | — | BAJO | ✅ Fundamentos |
+| C-02 | schema-definition | C-01 | CRITICO | ✅ Fundamentos |
 | C-03 | product-catalog | C-02 | BAJO | Catálogo |
 | C-04 | sales-screen | C-03 | MEDIO | Punto de Venta |
 | C-05 | supplies-management | C-02 | BAJO | Insumos y Servicios |

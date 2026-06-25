@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+*.exe
+pb_data/
+
+# PocketBase binary and runtime data (keep pb_migrations/)
+pocketbase/pocketbase.exe
+pocketbase/pb_data/

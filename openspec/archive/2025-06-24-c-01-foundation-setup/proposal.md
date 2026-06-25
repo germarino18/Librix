@@ -32,3 +32,23 @@ El proyecto Librix necesita un scaffold sólido antes de codear cualquier funcio
 - **Archivos creados**: package.json, vite.config.ts, tsconfig.json, index.html, src/ completo con estructura de carpetas, schemas de PocketBase
 - **Entorno**: se requiere Node.js + pnpm instalados en la PC Windows
 - **No breaking**: proyecto desde cero, no hay código previo que migrar
+
+---
+
+## Archive Information
+
+**Archived:** 2025-06-24 23:28
+**Duration:** 1 day (created 2025-06-24)
+**Outcome:** Successfully implemented
+
+### Files Modified
+- `src/` — Full scaffolding (Vite + React + TS + Tailwind + shadcn/ui)
+- `pocketbase/pb_migrations/` — 5 migration files for initial collections
+- `package.json` — Scripts, dependencies
+- `.env` / `.env.example` — Environment variables
+- `.gitignore` — Standard ignores
+
+### Specs Updated (Canonical)
+- `openspec/specs/project-setup/spec.md` — Created
+- `openspec/specs/pocketbase-schema/spec.md` — Created
+- `openspec/specs/ui-foundation/spec.md` — Created
