@@ -84,7 +84,7 @@ C-01 → C-02 → C-03 → C-04 → C-07 → C-08
   - `knowledge-base/08_arquitectura_propuesta.md` §Estructura de directorios
 
 ### [C-02] `schema-definition`
-- **Estado**: `[x]` implementado (falta aplicar migración — requiere PostgreSQL)
+- **Estado**: `[x]` archivado ✅
 - **Scope**: Definición de todas las entidades del sistema en SQLAlchemy + Alembic
   - Modelos SQLAlchemy y schemas Pydantic para las 8 entidades: Categoria, Producto, Venta, DetalleVenta, MovimientoStock, Caja, InsumoServicio, MovimientoInsumo, RegistroServicio
   - Migraciones Alembic con relaciones, índices y constraints

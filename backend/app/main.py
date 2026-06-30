@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.core.database import engine
+from app.features.productos.router import categoria_router, producto_router
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +51,10 @@ async def log_requests(request: Request, call_next):
         duration,
     )
     return response
+
+
+app.include_router(categoria_router)
+app.include_router(producto_router)
 
 
 @app.get("/api/health")

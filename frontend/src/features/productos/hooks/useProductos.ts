@@ -48,8 +48,8 @@ export function useToggleActivo() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, activo }: { id: string; activo: boolean }) =>
-      productosService.update(id, { activo }),
+    mutationFn: (id: string) =>
+      productosService.toggleActivo(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["productos"] })
     },

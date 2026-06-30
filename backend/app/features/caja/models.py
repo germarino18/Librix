@@ -18,11 +18,11 @@ class EstadoCaja(str, enum.Enum):
 class Caja(TimestampMixin, Base):
     __tablename__ = "cajas"
 
-    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uuid.uuid4)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     fecha: Mapped[str] = mapped_column(Date, nullable=False)
     monto_inicial: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
     monto_final: Mapped[Decimal | None] = mapped_column(Numeric(12, 2), nullable=True)
-    estado: Mapped[EstadoCaja] = mapped_column(Enum(EstadoCaja), default=EstadoCaja.ABIERTA)
+    estado: Mapped[EstadoCaja] = mapped_column(Enum(EstadoCaja, values_callable=lambda x: [e.value for e in x]), default=EstadoCaja.ABIERTA)
     total_efectivo: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
     total_transferencia: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
     total_qr: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)

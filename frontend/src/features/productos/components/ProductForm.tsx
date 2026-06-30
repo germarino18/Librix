@@ -19,11 +19,24 @@ import {
 } from "@/components/ui/select"
 import type { Producto, Categoria } from "../types/productosTypes"
 
+function PrecioCalculado({ precioCompra, porcentaje }: { precioCompra?: number; porcentaje?: number }) {
+  if (precioCompra == null || porcentaje == null || precioCompra <= 0) return null
+  const precioVenta = precioCompra * (1 + porcentaje / 100)
+  return (
+    <div className="rounded-md border border-green-200 bg-green-50 p-3 text-sm dark:border-green-800 dark:bg-green-950">
+      <span className="font-medium text-green-700 dark:text-green-300">Precio venta sugerido: </span>
+      <span className="text-lg font-bold text-green-800 dark:text-green-200">
+        ${precioVenta.toFixed(2)}
+      </span>
+    </div>
+  )
+}
+
 const productSchema = z.object({
   nombre: z.string().min(1, "El nombre es obligatorio"),
   categoria_id: z.string().optional(),
   precioCompra: z.number().positive("El precio debe ser mayor a 0").optional(),
-  precioVenta: z.number().positive("El precio debe ser mayor a 0").optional(),
+  porcentajeGanancia: z.number().min(0, "El porcentaje no puede ser negativo").max(1000, "Porcentaje muy alto").optional(),
   stockActual: z.number().min(0, "El stock no puede ser negativo").optional(),
   stockMinimo: z.number().optional(),
   unidad: z.enum(["unidad", "kg", "m"]).optional(),
@@ -46,7 +59,7 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
       nombre: producto?.nombre ?? "",
       categoria_id: producto?.categoria_id ?? "",
       precioCompra: producto?.precioCompra ?? undefined,
-      precioVenta: producto?.precioVenta ?? undefined,
+      porcentajeGanancia: producto?.porcentajeGanancia ?? 30,
       stockActual: producto?.stockActual ?? undefined,
       stockMinimo: producto?.stockMinimo ?? undefined,
       unidad: producto?.unidad ?? undefined,
@@ -105,17 +118,22 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
             name="precioCompra"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Precio compra</FormLabel>
+                <FormLabel>Precio compra ($)</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    {...field}
+                    type="text"
+                    inputMode="decimal"
+                    name={field.name}
+                    ref={field.ref}
+                    onBlur={field.onBlur}
                     value={field.value ?? ""}
                     onChange={(e) => {
-                      const val = e.target.value
-                      field.onChange(val === "" ? undefined : Number(val))
+                      const raw = e.target.value
+                      if (raw === "") return
+                      const cleaned = raw.replace(",", ".")
+                      if (/^\d*\.?\d{0,2}$/.test(cleaned)) {
+                        field.onChange(Number(cleaned))
+                      }
                     }}
                   />
                 </FormControl>
@@ -126,20 +144,24 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
 
           <FormField
             control={form.control}
-            name="precioVenta"
+            name="porcentajeGanancia"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Precio venta</FormLabel>
+                <FormLabel>Ganancia (%)</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    {...field}
+                    type="text"
+                    inputMode="numeric"
+                    name={field.name}
+                    ref={field.ref}
+                    onBlur={field.onBlur}
                     value={field.value ?? ""}
                     onChange={(e) => {
-                      const val = e.target.value
-                      field.onChange(val === "" ? undefined : Number(val))
+                      const raw = e.target.value
+                      if (raw === "") return
+                      if (/^\d{0,3}$/.test(raw)) {
+                        field.onChange(Number(raw))
+                      }
                     }}
                   />
                 </FormControl>
@@ -148,6 +170,12 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
             )}
           />
         </div>
+
+        {/* Precio venta calculado automáticamente */}
+        <PrecioCalculado
+          precioCompra={form.watch("precioCompra")}
+          porcentaje={form.watch("porcentajeGanancia")}
+        />
 
         <div className="grid grid-cols-2 gap-4">
           <FormField
@@ -158,13 +186,18 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
                 <FormLabel>Stock actual</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
-                    min="0"
-                    {...field}
+                    type="text"
+                    inputMode="numeric"
+                    name={field.name}
+                    ref={field.ref}
+                    onBlur={field.onBlur}
                     value={field.value ?? ""}
                     onChange={(e) => {
-                      const val = e.target.value
-                      field.onChange(val === "" ? undefined : Number(val))
+                      const raw = e.target.value
+                      if (raw === "") return
+                      if (/^\d{0,9}$/.test(raw)) {
+                        field.onChange(Number(raw))
+                      }
                     }}
                   />
                 </FormControl>
@@ -181,13 +214,18 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
                 <FormLabel>Stock mínimo</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
-                    min="0"
-                    {...field}
+                    type="text"
+                    inputMode="numeric"
+                    name={field.name}
+                    ref={field.ref}
+                    onBlur={field.onBlur}
                     value={field.value ?? ""}
                     onChange={(e) => {
-                      const val = e.target.value
-                      field.onChange(val === "" ? undefined : Number(val))
+                      const raw = e.target.value
+                      if (raw === "") return
+                      if (/^\d{0,9}$/.test(raw)) {
+                        field.onChange(Number(raw))
+                      }
                     }}
                   />
                 </FormControl>

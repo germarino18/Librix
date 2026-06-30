@@ -12,7 +12,7 @@ from app.shared.mixins import TimestampMixin
 class Categoria(TimestampMixin, Base):
     __tablename__ = "categorias"
 
-    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uuid.uuid4)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     nombre: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
 
     productos: Mapped[list["Producto"]] = relationship(back_populates="categoria")
@@ -21,10 +21,11 @@ class Categoria(TimestampMixin, Base):
 class Producto(TimestampMixin, Base):
     __tablename__ = "productos"
 
-    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uuid.uuid4)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     nombre: Mapped[str] = mapped_column(String(200), nullable=False)
     precio_compra: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
     precio_venta: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
+    porcentaje_ganancia: Mapped[Decimal] = mapped_column(Numeric(5, 2), default=Decimal("30.00"))
     stock_actual: Mapped[Decimal] = mapped_column(Numeric(10, 2), default=0)
     stock_minimo: Mapped[Decimal] = mapped_column(Numeric(10, 2), default=0)
     unidad: Mapped[str] = mapped_column(String(50), default="unidad")

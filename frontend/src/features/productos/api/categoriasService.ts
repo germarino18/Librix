@@ -1,32 +1,35 @@
-import { pb } from "@/lib/pocketbase"
+import { api } from "@/lib/api"
 import type { Categoria, CreateCategoriaInput, UpdateCategoriaInput } from "../types/productosTypes"
 
-const COLLECTION = "categoria"
+function mapCategoria(raw: Record<string, unknown>): Categoria {
+  return {
+    id: raw.id as string,
+    nombre: raw.nombre as string,
+    created: raw.created_at as string,
+    updated: raw.updated_at as string,
+  }
+}
 
 export async function list(): Promise<Categoria[]> {
-  return pb.collection(COLLECTION).getFullList<Categoria>({
-    sort: "nombre",
-  })
+  const raw = await api.get<Record<string, unknown>[]>("/categorias")
+  return raw.map(mapCategoria)
 }
 
 export async function getById(id: string): Promise<Categoria> {
-  return pb.collection(COLLECTION).getOne<Categoria>(id)
+  const raw = await api.get<Record<string, unknown>>(`/categorias/${id}`)
+  return mapCategoria(raw)
 }
 
 export async function create(data: CreateCategoriaInput): Promise<Categoria> {
-  return pb.collection(COLLECTION).create<Categoria>(data)
+  const raw = await api.post<Record<string, unknown>>("/categorias", data)
+  return mapCategoria(raw)
 }
 
 export async function update(id: string, data: UpdateCategoriaInput): Promise<Categoria> {
-  return pb.collection(COLLECTION).update<Categoria>(id, data)
+  const raw = await api.put<Record<string, unknown>>(`/categorias/${id}`, data)
+  return mapCategoria(raw)
 }
 
-export async function remove(id: string): Promise<boolean> {
-  const products = await pb.collection("producto").getList(1, 1, {
-    filter: `categoria_id="${id}"`,
-  })
-  if (products.totalItems > 0) {
-    throw new Error("No se puede eliminar la categoría porque tiene productos asociados")
-  }
-  return pb.collection(COLLECTION).delete(id)
+export async function remove(id: string): Promise<void> {
+  await api.delete<void>(`/categorias/${id}`)
 }

@@ -21,6 +21,7 @@ export interface Producto {
   categoria_id: string
   precioCompra: number
   precioVenta: number
+  porcentajeGanancia: number
   stockActual: number
   stockMinimo: number
   unidad: "unidad" | "kg" | "m"
@@ -34,7 +35,7 @@ export interface CreateProductoInput {
   nombre: string
   categoria_id?: string
   precioCompra?: number
-  precioVenta?: number
+  porcentajeGanancia?: number
   stockActual?: number
   stockMinimo?: number
   unidad?: "unidad" | "kg" | "m"
@@ -45,7 +46,7 @@ export interface UpdateProductoInput {
   nombre?: string
   categoria_id?: string
   precioCompra?: number
-  precioVenta?: number
+  porcentajeGanancia?: number
   stockActual?: number
   stockMinimo?: number
   unidad?: "unidad" | "kg" | "m"

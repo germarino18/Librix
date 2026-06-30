@@ -59,31 +59,25 @@ export default function ProductosPage() {
       setProductoToToggle(producto)
       setToggleConfirmOpen(true)
     } else {
-      toggleMutation.mutate(
-        { id: producto.id, activo: true },
-        {
-          onSuccess: () => toast.success("Producto reactivado"),
-          onError: () => toast.error("Error al reactivar producto"),
-        },
-      )
+      toggleMutation.mutate(producto.id, {
+        onSuccess: () => toast.success("Producto reactivado"),
+        onError: () => toast.error("Error al reactivar producto"),
+      })
     }
   }
 
   function confirmToggle() {
     if (!productoToToggle) return
-    toggleMutation.mutate(
-      { id: productoToToggle.id, activo: false },
-      {
-        onSuccess: () => {
-          toast.success("Producto desactivado")
-          setToggleConfirmOpen(false)
-          setProductoToToggle(undefined)
-        },
-        onError: () => {
-          toast.error("Error al desactivar producto")
-        },
+    toggleMutation.mutate(productoToToggle.id, {
+      onSuccess: () => {
+        toast.success("Producto desactivado")
+        setToggleConfirmOpen(false)
+        setProductoToToggle(undefined)
       },
-    )
+      onError: () => {
+        toast.error("Error al desactivar producto")
+      },
+    })
   }
 
   function handleDelete(producto: Producto) {
@@ -93,19 +87,16 @@ export default function ProductosPage() {
 
   function confirmDelete() {
     if (!productoToDelete) return
-    toggleMutation.mutate(
-      { id: productoToDelete.id, activo: false },
-      {
-        onSuccess: () => {
-          toast.success("Producto desactivado")
-          setDeleteConfirmOpen(false)
-          setProductoToDelete(undefined)
-        },
-        onError: () => {
-          toast.error("Error al desactivar producto")
-        },
+    toggleMutation.mutate(productoToDelete.id, {
+      onSuccess: () => {
+        toast.success("Producto desactivado")
+        setDeleteConfirmOpen(false)
+        setProductoToDelete(undefined)
       },
-    )
+      onError: () => {
+        toast.error("Error al desactivar producto")
+      },
+    })
   }
 
   function handleSearchChange(value: string) {

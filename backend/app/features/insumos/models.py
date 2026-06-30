@@ -19,7 +19,7 @@ class TipoMovInsumo(str, enum.Enum):
 class InsumoServicio(TimestampMixin, Base):
     __tablename__ = "insumos_servicio"
 
-    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uuid.uuid4)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     nombre: Mapped[str] = mapped_column(String(200), nullable=False)
     stock_actual: Mapped[Decimal] = mapped_column(Numeric(10, 2), default=0)
     unidad: Mapped[str] = mapped_column(String(50), default="unidad")
@@ -33,9 +33,9 @@ class InsumoServicio(TimestampMixin, Base):
 class MovimientoInsumo(TimestampMixin, Base):
     __tablename__ = "movimientos_insumo"
 
-    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uuid.uuid4)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     insumo_id: Mapped[str] = mapped_column(String(36), ForeignKey("insumos_servicio.id"), nullable=False)
-    tipo: Mapped[TipoMovInsumo] = mapped_column(Enum(TipoMovInsumo), nullable=False)
+    tipo: Mapped[TipoMovInsumo] = mapped_column(Enum(TipoMovInsumo, values_callable=lambda x: [e.value for e in x]), nullable=False)
     cantidad: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
     fecha_hora: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     observacion: Mapped[str | None] = mapped_column(Text, nullable=True)

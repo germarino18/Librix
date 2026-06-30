@@ -101,16 +101,16 @@
 - [x] 3.1.4 9 tablas con FKs, índices y constraints ✓
 
 ### 3.2 Aplicar y verificar
-- [ ] 3.2.1 ~~`alembic upgrade head`~~ (pendiente de PostgreSQL)
-- [ ] 3.2.2 Verificación visual pendiente
-- [ ] 3.2.3 Test de inserción pendiente
+- [x] 3.2.1 `alembic upgrade head` ejecutado ✅
+- [x] 3.2.2 Verificación visual — 10 tablas confirmadas en PostgreSQL ✅
+- [x] 3.2.3 Test de inserción — 20 registros insertados via psql, verificados ✅
 
 ---
 
 ## Phase 4: Seed Data (opcional)
 
 ### 4.1 Script de seed
-- [ ] 4.1.1 Crear `backend/scripts/seed.py` (pendiente)
+- [x] 4.1.1 Crear `backend/scripts/seed.py` ✅
 
 ---
 
@@ -120,8 +120,8 @@
 - [x] Q-02: Todos los schemas importan correctamente ✓
 - [x] Q-03: uvicorn inicia sin errores ✓
 - [x] Q-04: `alembic upgrade head --sql` genera SQL válido ✓
-- [ ] Q-05: `alembic upgrade head` (requiere PostgreSQL)
-- [ ] Q-06: `pytest` pasa
+- [x] Q-05: `alembic upgrade head` ejecutado ✅
+- [x] Q-06: `pytest` pasa — 1 test (health check) ✅
 
 ---
 
