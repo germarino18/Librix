@@ -59,7 +59,7 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
       nombre: producto?.nombre ?? "",
       categoria_id: producto?.categoria_id ?? "",
       precioCompra: producto?.precioCompra ?? undefined,
-      porcentajeGanancia: producto?.porcentajeGanancia ?? 30,
+      porcentajeGanancia: producto?.porcentajeGanancia ?? undefined,
       stockActual: producto?.stockActual ?? undefined,
       stockMinimo: producto?.stockMinimo ?? undefined,
       unidad: producto?.unidad ?? undefined,
