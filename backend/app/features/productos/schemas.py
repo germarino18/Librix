@@ -37,7 +37,7 @@ class ProductoBase(BaseModel):
     unidad: str = "unidad"
     activo: bool = True
     categoria_id: Optional[str] = None
-    porcentaje_ganancia: Decimal = Decimal("30.00")
+    porcentaje_ganancia: Optional[Decimal] = None
 
 
 class ProductoCreate(ProductoBase):

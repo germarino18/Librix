@@ -9,8 +9,10 @@ from app.features.productos.repository import (
 )
 
 
-def _calcular_precio_venta(precio_compra: Decimal, porcentaje_ganancia: Decimal) -> Decimal:
-    """Calcula precio_venta = precio_compra * (1 + porcentaje_ganancia / 100)."""
+def _calcular_precio_venta(precio_compra: Decimal, porcentaje_ganancia: Decimal | None) -> Decimal:
+    """Calcula precio_venta = precio_compra * (1 + porcentaje_ganancia / 100). Si no hay porcentaje, precio_venta = precio_compra."""
+    if porcentaje_ganancia is None:
+        return precio_compra
     return (precio_compra * (Decimal("1") + porcentaje_ganancia / Decimal("100"))).quantize(Decimal("0.01"))
 
 
@@ -110,7 +112,7 @@ class ProductoService:
                 raise ValueError("La categoría especificada no existe")
         # Auto-calcular precio_venta
         precio_compra = data.get("precio_compra", Decimal("0"))
-        porcentaje = data.get("porcentaje_ganancia", Decimal("30.00"))
+        porcentaje = data.get("porcentaje_ganancia")  # None si no se especificó
         data["precio_venta"] = _calcular_precio_venta(precio_compra, porcentaje)
         producto = await self.repo.create(data)
         return self._to_response(producto)

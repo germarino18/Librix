@@ -25,7 +25,7 @@ class Producto(TimestampMixin, Base):
     nombre: Mapped[str] = mapped_column(String(200), nullable=False)
     precio_compra: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
     precio_venta: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0)
-    porcentaje_ganancia: Mapped[Decimal] = mapped_column(Numeric(5, 2), default=Decimal("30.00"))
+    porcentaje_ganancia: Mapped[Decimal | None] = mapped_column(Numeric(5, 2), nullable=True, default=None)
     stock_actual: Mapped[Decimal] = mapped_column(Numeric(10, 2), default=0)
     stock_minimo: Mapped[Decimal] = mapped_column(Numeric(10, 2), default=0)
     unidad: Mapped[str] = mapped_column(String(50), default="unidad")

@@ -36,7 +36,7 @@ const productSchema = z.object({
   nombre: z.string().min(1, "El nombre es obligatorio"),
   categoria_id: z.string().optional(),
   precioCompra: z.number().positive("El precio debe ser mayor a 0").optional(),
-  porcentajeGanancia: z.number().min(0, "El porcentaje no puede ser negativo").max(1000, "Porcentaje muy alto").optional(),
+  porcentajeGanancia: z.number().min(0, "El porcentaje no puede ser negativo").max(99, "Máximo 99%").optional(),
   stockActual: z.number().min(0, "El stock no puede ser negativo").optional(),
   stockMinimo: z.number().optional(),
   unidad: z.enum(["unidad", "kg", "m"]).optional(),
@@ -69,7 +69,7 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form key={producto?.id ?? "new"} onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="nombre"
@@ -126,7 +126,7 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
                     name={field.name}
                     ref={field.ref}
                     onBlur={field.onBlur}
-                    value={field.value ?? ""}
+                    defaultValue={field.value ?? ""}
                     onChange={(e) => {
                       const raw = e.target.value
                       if (raw === "") return
@@ -155,11 +155,11 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
                     name={field.name}
                     ref={field.ref}
                     onBlur={field.onBlur}
-                    value={field.value ?? ""}
+                    defaultValue={field.value ?? ""}
                     onChange={(e) => {
                       const raw = e.target.value
                       if (raw === "") return
-                      if (/^\d{0,3}$/.test(raw)) {
+                      if (/^\d{0,2}$/.test(raw)) {
                         field.onChange(Number(raw))
                       }
                     }}
@@ -191,7 +191,7 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
                     name={field.name}
                     ref={field.ref}
                     onBlur={field.onBlur}
-                    value={field.value ?? ""}
+                    defaultValue={field.value ?? ""}
                     onChange={(e) => {
                       const raw = e.target.value
                       if (raw === "") return
@@ -219,7 +219,7 @@ export function ProductForm({ producto, categorias, onSubmit, disabled }: Produc
                     name={field.name}
                     ref={field.ref}
                     onBlur={field.onBlur}
-                    value={field.value ?? ""}
+                    defaultValue={field.value ?? ""}
                     onChange={(e) => {
                       const raw = e.target.value
                       if (raw === "") return
