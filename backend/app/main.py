@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import engine
 from app.features.productos.router import categoria_router, producto_router
+from app.features.ventas.router import router as ventas_router
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +32,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
+    allow_origin_regex=r".*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -55,6 +57,7 @@ async def log_requests(request: Request, call_next):
 
 app.include_router(categoria_router)
 app.include_router(producto_router)
+app.include_router(ventas_router)
 
 
 @app.get("/api/health")

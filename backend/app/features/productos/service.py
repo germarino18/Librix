@@ -1,5 +1,6 @@
 """Productos — business logic."""
 from decimal import Decimal
+from typing import List
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -139,6 +140,20 @@ class ProductoService:
         if not producto:
             return None
         return self._to_response(producto)
+
+    async def buscar(self, query: str) -> List[dict]:
+        if not query:
+            return []
+        productos = await self.repo.buscar(query)
+        return [
+            {
+                "id": p.id,
+                "nombre": p.nombre,
+                "precio_venta": p.precio_venta,
+                "stock_actual": p.stock_actual,
+            }
+            for p in productos
+        ]
 
     def _to_response(self, producto) -> dict:
         return {

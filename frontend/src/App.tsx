@@ -11,8 +11,8 @@ export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route index element={<DashboardPage />} />
-        <Route path="ventas" element={<VentasPage />} />
+        <Route index element={<VentasPage />} />
+        <Route path="dashboard" element={<DashboardPage />} />
         <Route path="productos" element={<ProductosPage />} />
         <Route path="insumos" element={<InsumosPage />} />
         <Route path="servicios" element={<ServiciosPage />} />

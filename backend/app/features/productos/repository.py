@@ -1,4 +1,5 @@
 """Productos — database queries."""
+from typing import List
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -136,3 +137,16 @@ class ProductoRepository:
             .where(Producto.id == id)
         )
         return result.scalar_one()
+
+    async def buscar(self, query: str) -> List[Producto]:
+        """Lightweight search by name, active only, stock > 0."""
+        pattern = f"%{query}%"
+        result = await self.session.execute(
+            select(Producto)
+            .where(Producto.activo == True)
+            .where(Producto.stock_actual > 0)
+            .where(Producto.nombre.ilike(pattern))
+            .order_by(Producto.nombre)
+            .limit(20)
+        )
+        return list(result.scalars().all())

@@ -21,6 +21,7 @@ class DetalleVentaResponse(DetalleVentaBase):
     model_config = ConfigDict(from_attributes=True)
     id: str
     venta_id: str
+    producto_nombre: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 
@@ -33,7 +34,8 @@ class VentaCreate(BaseModel):
     detalles: list[DetalleVentaBase]
 
 
-class VentaResponse(BaseModel):
+class VentaResumen(BaseModel):
+    """Resumen de venta sin detalles (para listados)."""
     model_config = ConfigDict(from_attributes=True)
     id: str
     fecha_hora: datetime
@@ -41,6 +43,17 @@ class VentaResponse(BaseModel):
     metodo_pago: MetodoPago
     estado: EstadoVenta
     observacion: Optional[str] = None
-    detalles: list[DetalleVentaResponse]
     created_at: datetime
     updated_at: datetime
+
+
+class VentaListResponse(BaseModel):
+    items: list[VentaResumen]
+    total: int
+    page: int
+    per_page: int
+    total_pages: int
+
+
+class VentaResponse(VentaResumen):
+    detalles: list[DetalleVentaResponse]

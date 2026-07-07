@@ -6,7 +6,7 @@
  *   const products = await api.get<Product[]>("/productos")
  */
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000/api"
+const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8002/api"
 
 export class ApiError extends Error {
   status: number

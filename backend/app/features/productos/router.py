@@ -89,6 +89,15 @@ async def list_productos(
     )
 
 
+@producto_router.get("/buscar")
+async def buscar_productos(
+    q: str = Query("", min_length=0),
+    db: AsyncSession = Depends(get_db),
+):
+    service = ProductoService(db)
+    return await service.buscar(q)
+
+
 @producto_router.get("/{id}", response_model=ProductoResponse)
 async def get_producto(id: str, db: AsyncSession = Depends(get_db)):
     service = ProductoService(db)
