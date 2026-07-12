@@ -136,7 +136,7 @@ C-01 → C-02 → C-03 → C-04 → C-07 → C-08
 ## FASE 3 — Insumos y Servicios Post-Jornada
 
 ### [C-05] `supplies-management`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` archivado ✅
 - **Scope**: ABM de insumos de servicios con registro de ingresos y consumos
   - Página `/insumos`, ABM insumos, registro de ingreso/consumo, alertas de stock bajo
   - API endpoints: CRUD insumos, CRUD movimientos insumo
@@ -212,7 +212,7 @@ C-01 → C-02 → C-03 → C-04 → C-07 → C-08
 | C-02 | schema-definition | C-01 | CRITICO | Fundamentos |
 | C-03 | product-catalog | C-02 | BAJO | Catálogo |
 | C-04 | sales-screen | C-03 | MEDIO | Punto de Venta |
-| C-05 | supplies-management | C-02 | BAJO | Insumos y Servicios |
+| C-05 | supplies-management | C-02 | BAJO | ✅ Insumos y Servicios |
 | C-06 | services-logging | C-05, C-02 | BAJO | Insumos y Servicios |
 | C-07 | cash-register | C-04, C-06 | MEDIO | Caja y Dashboard |
 | C-08 | profit-dashboard | C-07 | MEDIO | Caja y Dashboard |

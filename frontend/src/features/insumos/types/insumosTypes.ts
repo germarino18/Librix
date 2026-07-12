@@ -1,46 +1,45 @@
-export interface InsumoServicio {
+export interface Insumo {
   id: string
-  created: string
-  updated: string
   nombre: string
-  stockActual: number
+  stock_actual: number
   unidad: string
-  costoUnitario: number
-  stockMinimo: number
-  paginasPorUnidad: number | null
+  costo_unitario: number
+  stock_minimo: number
+  paginas_por_unidad: number | null
+  stock_bajo: boolean
+  created_at: string
+  updated_at: string
 }
 
 export interface MovimientoInsumo {
   id: string
-  created: string
-  updated: string
-  insumoServicio_id: string
+  insumo_id: string
   tipo: "ingreso" | "consumo"
   cantidad: number
-  fechaHora: string
-  observacion: string
+  fecha_hora: string
+  observacion: string | null
+  created_at: string
+  updated_at: string
 }
 
 export interface CreateInsumoInput {
   nombre: string
-  stockActual?: number
   unidad: string
-  costoUnitario?: number
-  stockMinimo?: number
-  paginasPorUnidad?: number | null
+  costo_unitario?: number
+  stock_actual?: number
+  stock_minimo?: number
+  paginas_por_unidad?: number | null
 }
 
 export interface UpdateInsumoInput {
   nombre?: string
-  stockActual?: number
   unidad?: string
-  costoUnitario?: number
-  stockMinimo?: number
-  paginasPorUnidad?: number | null
+  costo_unitario?: number
+  stock_minimo?: number
+  paginas_por_unidad?: number | null
 }
 
 export interface CreateMovimientoInput {
-  insumoServicio_id: string
   tipo: "ingreso" | "consumo"
   cantidad: number
   observacion?: string

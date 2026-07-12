@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.core.database import engine
+from app.features.insumos.router import router as insumos_router
 from app.features.productos.router import categoria_router, producto_router
 from app.features.ventas.router import router as ventas_router
 
@@ -55,6 +56,7 @@ async def log_requests(request: Request, call_next):
     return response
 
 
+app.include_router(insumos_router)
 app.include_router(categoria_router)
 app.include_router(producto_router)
 app.include_router(ventas_router)

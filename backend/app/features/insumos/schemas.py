@@ -3,7 +3,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.features.insumos.models import TipoMovInsumo
 
@@ -19,7 +19,7 @@ class InsumoBase(BaseModel):
 
 
 class InsumoCreate(InsumoBase):
-    pass
+    stock_actual: Decimal = Decimal("0")
 
 
 class InsumoUpdate(BaseModel):
@@ -34,20 +34,20 @@ class InsumoResponse(InsumoBase):
     model_config = ConfigDict(from_attributes=True)
     id: str
     stock_actual: Decimal
+    stock_bajo: bool
     created_at: datetime
     updated_at: datetime
 
 
 # ── MovimientoInsumo ──
 
-class MovimientoInsumoCreate(BaseModel):
-    insumo_id: str
+class MovimientoCreate(BaseModel):
     tipo: TipoMovInsumo
-    cantidad: Decimal
+    cantidad: Decimal = Field(gt=0)
     observacion: Optional[str] = None
 
 
-class MovimientoInsumoResponse(BaseModel):
+class MovimientoResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: str
     insumo_id: str
