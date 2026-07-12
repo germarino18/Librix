@@ -52,14 +52,16 @@ export default function CartPanel({ items, onUpdateQty, onRemove }: CartPanelPro
               </Button>
 
               <Input
-                type="number"
-                min={1}
-                value={item.cantidad}
+                type="text"
+                inputMode="numeric"
+                defaultValue={item.cantidad}
                 onChange={(e) => {
-                  const val = parseInt(e.target.value, 10)
+                  const raw = e.target.value
+                  if (raw === "") return
+                  const val = parseInt(raw, 10)
                   if (val >= 1) onUpdateQty(item.productoId, val)
                 }}
-                className="w-14 h-8 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="w-14 h-8 text-center"
               />
 
               <Button

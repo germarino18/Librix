@@ -141,12 +141,21 @@ export default function InsumoForm({ open, onOpenChange, onSubmit, editingInsumo
                     <FormLabel>Costo Unitario</FormLabel>
                     <FormControl>
                       <Input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        value={field.value}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
+                      type="text"
+                      inputMode="decimal"
+                      name={field.name}
+                      ref={field.ref}
+                      onBlur={field.onBlur}
+                      defaultValue={field.value ?? ""}
+                      onChange={(e) => {
+                        const raw = e.target.value
+                        if (raw === "") return
+                        const cleaned = raw.replace(",", ".")
+                        if (/^\d*\.?\d{0,2}$/.test(cleaned)) {
+                          field.onChange(Number(cleaned))
+                        }
+                      }}
+                    />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -160,12 +169,20 @@ export default function InsumoForm({ open, onOpenChange, onSubmit, editingInsumo
                     <FormLabel>Stock Mínimo</FormLabel>
                     <FormControl>
                       <Input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        value={field.value}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
+                      type="text"
+                      inputMode="numeric"
+                      name={field.name}
+                      ref={field.ref}
+                      onBlur={field.onBlur}
+                      defaultValue={field.value ?? ""}
+                      onChange={(e) => {
+                        const raw = e.target.value
+                        if (raw === "") return
+                        if (/^\d{0,9}$/.test(raw)) {
+                          field.onChange(Number(raw))
+                        }
+                      }}
+                    />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -181,11 +198,19 @@ export default function InsumoForm({ open, onOpenChange, onSubmit, editingInsumo
                   <FormLabel>Stock Actual</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      value={field.value}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      type="text"
+                      inputMode="numeric"
+                      name={field.name}
+                      ref={field.ref}
+                      onBlur={field.onBlur}
+                      defaultValue={field.value ?? ""}
+                      onChange={(e) => {
+                        const raw = e.target.value
+                        if (raw === "") return
+                        if (/^\d{0,9}$/.test(raw)) {
+                          field.onChange(Number(raw))
+                        }
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
@@ -202,13 +227,21 @@ export default function InsumoForm({ open, onOpenChange, onSubmit, editingInsumo
                     <FormLabel>Páginas por Cartucho</FormLabel>
                     <FormControl>
                       <Input
-                        type="number"
-                        step="1"
-                        min="1"
-                        value={field.value ?? ""}
+                        type="text"
+                        inputMode="numeric"
+                        name={field.name}
+                        ref={field.ref}
+                        onBlur={field.onBlur}
+                        defaultValue={field.value ?? ""}
                         onChange={(e) => {
-                          const val = e.target.value
-                          field.onChange(val === "" ? null : parseInt(val, 10))
+                          const raw = e.target.value
+                          if (raw === "") {
+                            field.onChange(null)
+                            return
+                          }
+                          if (/^\d{0,9}$/.test(raw)) {
+                            field.onChange(Number(raw))
+                          }
                         }}
                       />
                     </FormControl>

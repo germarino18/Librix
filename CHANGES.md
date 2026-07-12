@@ -147,7 +147,7 @@ C-01 → C-02 → C-03 → C-04 → C-07 → C-08
   - `knowledge-base/06_funcionalidades.md` §Épica 3
 
 ### [C-06] `services-logging`
-- **Estado**: `[ ]` pendiente
+- **Estado**: `[x]` archivado ✅
 - **Scope**: Registro post-jornada de servicios (fotocopias, plastificados, souvenirs)
   - Página `/servicios`, formularios por tipo, cálculo automático de ganancia (RN-09)
   - API endpoints: CRUD registros servicio
@@ -213,7 +213,7 @@ C-01 → C-02 → C-03 → C-04 → C-07 → C-08
 | C-03 | product-catalog | C-02 | BAJO | Catálogo |
 | C-04 | sales-screen | C-03 | MEDIO | Punto de Venta |
 | C-05 | supplies-management | C-02 | BAJO | ✅ Insumos y Servicios |
-| C-06 | services-logging | C-05, C-02 | BAJO | Insumos y Servicios |
+| C-06 | services-logging | C-05, C-02 | BAJO | ✅ Insumos y Servicios |
 | C-07 | cash-register | C-04, C-06 | MEDIO | Caja y Dashboard |
 | C-08 | profit-dashboard | C-07 | MEDIO | Caja y Dashboard |
 | C-09 | stock-history | C-03 | BAJO | Historial |

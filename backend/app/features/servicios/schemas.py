@@ -15,7 +15,6 @@ class RegistroServicioCreate(BaseModel):
     cantidad: Decimal = Decimal("1")
     ingreso_total: Decimal = Decimal("0")
     costo_insumos: Decimal = Decimal("0")
-    ganancia: Decimal = Decimal("0")
 
 
 class RegistroServicioResponse(BaseModel):
@@ -30,3 +29,8 @@ class RegistroServicioResponse(BaseModel):
     ganancia: Decimal
     created_at: datetime
     updated_at: datetime
+
+
+class RegistroServicioFiltros(BaseModel):
+    fecha: Optional[date] = None
+    tipo: Optional[TipoServicio] = None

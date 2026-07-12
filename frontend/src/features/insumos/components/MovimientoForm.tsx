@@ -79,11 +79,15 @@ export default function MovimientoForm({ insumo, open, onOpenChange, onSubmit, i
             <Label htmlFor="cantidad">Cantidad</Label>
             <Input
               id="cantidad"
-              type="number"
-              step="0.01"
-              min="0.01"
+              type="text"
+              inputMode="decimal"
               value={cantidad}
-              onChange={(e) => setCantidad(e.target.value)}
+              onChange={(e) => {
+                const raw = e.target.value
+                if (raw === "" || /^\d*\.?\d{0,2}$/.test(raw)) {
+                  setCantidad(raw)
+                }
+              }}
               placeholder="0"
               required
             />

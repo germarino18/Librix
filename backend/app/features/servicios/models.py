@@ -11,7 +11,7 @@ from app.shared.mixins import TimestampMixin
 
 
 class TipoServicio(str, enum.Enum):
-    FOCOCOPIA = "fotocopia"
+    FOTOCOPIA = "fotocopia"
     PLASTIFICADO = "plastificado"
     SOUVENIR = "souvenir"
     OTRO = "otro"
