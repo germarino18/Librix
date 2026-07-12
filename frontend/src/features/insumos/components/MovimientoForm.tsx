@@ -53,7 +53,11 @@ export default function MovimientoForm({ insumo, open, onOpenChange, onSubmit, i
         onOpenChange(open)
       }}
     >
-      <DialogContent className="sm:max-w-sm">
+      <DialogContent
+        className="sm:max-w-sm"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>Registrar Movimiento</DialogTitle>
           <DialogDescription>

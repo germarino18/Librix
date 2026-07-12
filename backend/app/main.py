@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import engine
 from app.features.insumos.router import router as insumos_router
+from app.features.caja.router import router as caja_router
 from app.features.productos.router import categoria_router, producto_router
 from app.features.servicios.router import router as servicios_router
 from app.features.ventas.router import router as ventas_router
@@ -33,9 +34,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_origin_regex=r".*",
-    allow_credentials=True,
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -62,6 +61,7 @@ app.include_router(categoria_router)
 app.include_router(producto_router)
 app.include_router(servicios_router)
 app.include_router(ventas_router)
+app.include_router(caja_router)
 
 
 @app.get("/api/health")

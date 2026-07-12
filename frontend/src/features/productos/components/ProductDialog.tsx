@@ -73,7 +73,11 @@ export function ProductDialog({ open, onOpenChange, onSuccess, producto }: Produ
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent
+        className="sm:max-w-lg"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>{isEditing ? "Editar producto" : "Nuevo producto"}</DialogTitle>
           <DialogDescription>

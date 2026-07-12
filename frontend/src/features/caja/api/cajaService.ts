@@ -1,35 +1,53 @@
-import { pb } from "@/lib/pocketbase"
-import type { Caja, CreateCajaInput, UpdateCajaInput, CloseCajaInput } from "../types/cajaTypes"
+import { api } from "@/lib/api"
+import type { Caja, CajaHistorial, AbrirCajaInput, CerrarCajaInput } from "../types/cajaTypes"
 
-const COLLECTION = "caja"
-
-export async function list(): Promise<Caja[]> {
-  return pb.collection(COLLECTION).getFullList<Caja>()
+function mapCaja(raw: Record<string, unknown>): Caja {
+  return {
+    id: raw.id as string,
+    fecha: raw.fecha as string,
+    monto_inicial: Number(raw.monto_inicial),
+    monto_final: raw.monto_final != null ? Number(raw.monto_final) : null,
+    estado: raw.estado as Caja["estado"],
+    total_efectivo: Number(raw.total_efectivo),
+    total_transferencia: Number(raw.total_transferencia),
+    total_qr: Number(raw.total_qr),
+    total_servicios: Number(raw.total_servicios),
+    observacion: raw.observacion as string | null,
+    created_at: raw.created_at as string,
+    updated_at: raw.updated_at as string,
+  }
 }
 
-export async function getById(id: string): Promise<Caja> {
-  return pb.collection(COLLECTION).getOne<Caja>(id)
+export async function getActual(): Promise<Caja> {
+  const raw = await api.get<Record<string, unknown>>("/caja/actual")
+  return mapCaja(raw)
 }
 
-export async function create(data: CreateCajaInput): Promise<Caja> {
-  return pb.collection(COLLECTION).create<Caja>(data)
+export async function abrirCaja(data: AbrirCajaInput): Promise<Caja> {
+  const raw = await api.post<Record<string, unknown>>("/caja/abrir", data)
+  return mapCaja(raw)
 }
 
-export async function update(id: string, data: UpdateCajaInput): Promise<Caja> {
-  return pb.collection(COLLECTION).update<Caja>(id, data)
+export async function cerrarCaja(data: CerrarCajaInput): Promise<Caja> {
+  const raw = await api.post<Record<string, unknown>>("/caja/cerrar", data)
+  return mapCaja(raw)
 }
 
-export async function getTodayCaja(): Promise<Caja | null> {
-  const today = new Date().toISOString().slice(0, 10)
-  const records = await pb.collection(COLLECTION).getFullList<Caja>({
-    filter: `fecha = "${today}" && estado = "abierta"`,
-  })
-  return records.length > 0 ? records[0] : null
+export async function getHistorial(
+  skip: number = 0,
+  limit: number = 10,
+): Promise<CajaHistorial> {
+  const params = new URLSearchParams()
+  params.set("skip", String(skip))
+  params.set("limit", String(limit))
+  const raw = await api.get<Record<string, unknown>>(`/caja/historial?${params.toString()}`)
+  return {
+    total: raw.total as number,
+    items: (raw.items as Record<string, unknown>[]).map(mapCaja),
+  }
 }
 
-export async function closeCaja(id: string, totals: CloseCajaInput): Promise<Caja> {
-  return pb.collection(COLLECTION).update<Caja>(id, {
-    ...totals,
-    estado: "cerrada",
-  })
+export async function getCajaById(id: string): Promise<Caja> {
+  const raw = await api.get<Record<string, unknown>>(`/caja/${id}`)
+  return mapCaja(raw)
 }

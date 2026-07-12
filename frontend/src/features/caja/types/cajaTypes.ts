@@ -1,41 +1,28 @@
 export interface Caja {
   id: string
-  created: string
-  updated: string
   fecha: string
-  montoInicial: number
-  montoFinal: number | null
+  monto_inicial: number
+  monto_final: number | null
   estado: "abierta" | "cerrada"
-  totalEfectivo: number
-  totalTransferencia: number
-  totalQR: number
-  totalServicios: number
-  observacion: string
+  total_efectivo: number
+  total_transferencia: number
+  total_qr: number
+  total_servicios: number
+  observacion: string | null
+  created_at: string
+  updated_at: string
 }
 
-export interface CreateCajaInput {
-  fecha: string
-  montoInicial: number
-  estado: "abierta"
+export interface CajaHistorial {
+  total: number
+  items: Caja[]
+}
+
+export interface AbrirCajaInput {
+  monto_inicial: number
   observacion?: string
 }
 
-export interface UpdateCajaInput {
-  fecha?: string
-  montoInicial?: number
-  montoFinal?: number | null
-  estado?: "abierta" | "cerrada"
-  totalEfectivo?: number
-  totalTransferencia?: number
-  totalQR?: number
-  totalServicios?: number
+export interface CerrarCajaInput {
   observacion?: string
-}
-
-export interface CloseCajaInput {
-  montoFinal: number
-  totalEfectivo: number
-  totalTransferencia: number
-  totalQR: number
-  totalServicios: number
 }

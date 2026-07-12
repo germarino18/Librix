@@ -25,11 +25,11 @@ export default function CobrarButton({ disabled, total, metodoPago, onConfirm }:
     setLoading(true)
     try {
       await onConfirm()
-      setOpen(false)
       toast.success("Venta registrada con éxito")
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Error al registrar la venta")
     } finally {
+      setOpen(false)
       setLoading(false)
     }
   }

@@ -54,12 +54,12 @@ export default function CartPanel({ items, onUpdateQty, onRemove }: CartPanelPro
               <Input
                 type="text"
                 inputMode="numeric"
-                defaultValue={item.cantidad}
+                value={item.cantidad}
                 onChange={(e) => {
                   const raw = e.target.value
                   if (raw === "") return
                   const val = parseInt(raw, 10)
-                  if (val >= 1) onUpdateQty(item.productoId, val)
+                  if (val >= 1 && !isNaN(val)) onUpdateQty(item.productoId, val)
                 }}
                 className="w-14 h-8 text-center"
               />

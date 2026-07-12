@@ -14,11 +14,6 @@ class CajaCreate(BaseModel):
 
 
 class CajaCierre(BaseModel):
-    monto_final: Decimal
-    total_efectivo: Decimal = Decimal("0")
-    total_transferencia: Decimal = Decimal("0")
-    total_qr: Decimal = Decimal("0")
-    total_servicios: Decimal = Decimal("0")
     observacion: Optional[str] = None
 
 
@@ -36,3 +31,9 @@ class CajaResponse(BaseModel):
     observacion: Optional[str] = None
     created_at: datetime
     updated_at: datetime
+
+
+class CajaHistorialResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    total: int
+    items: list[CajaResponse]

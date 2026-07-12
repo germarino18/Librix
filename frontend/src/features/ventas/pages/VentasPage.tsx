@@ -66,7 +66,7 @@ type ViewMode = "pos" | "historial"
 export default function VentasPage() {
   const [view, setView] = useState<ViewMode>("pos")
   const [state, dispatch] = useReducer(cartReducer, { items: [], metodoPago: "efectivo" })
-  const createVenta = useCreateVenta()
+  const createVenta = useCreateVenta(() => dispatch({ type: "RESET" }))
   const [frequentProducts, setFrequentProducts] = useState<
     Array<{ id: string; nombre: string; precioVenta: number; stockActual: number }>
   >([])
@@ -106,7 +106,6 @@ export default function VentasPage() {
         subtotal: i.subtotal,
       })),
     })
-    dispatch({ type: "RESET" })
   }, [state, createVenta])
 
   return (

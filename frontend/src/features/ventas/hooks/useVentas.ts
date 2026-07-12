@@ -12,13 +12,15 @@ export function useProductSearch(q: string) {
   })
 }
 
-export function useCreateVenta() {
+export function useCreateVenta(onVentaCreada?: () => void) {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: CreateVentaInput) => createVenta(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["productos"] })
       queryClient.invalidateQueries({ queryKey: ["ventas"] })
+      queryClient.invalidateQueries({ queryKey: ["caja"] })
+      onVentaCreada?.()
     },
   })
 }
